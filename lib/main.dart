@@ -1,3 +1,4 @@
+import 'package:change_viewport_on_scroll_start/animations/animated_container.dart';
 import 'package:change_viewport_on_scroll_start/carousel_holder.dart';
 import 'package:flutter/material.dart';
 
@@ -12,10 +13,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
         primarySwatch: Colors.blue,
       ),
-      home: const NewsDetailViewScreenCarousel(),
+      // home: const NewsDetailViewScreenCarousel(),
+      home: const AnimatedContainerDemo(),
     );
   }
 }
