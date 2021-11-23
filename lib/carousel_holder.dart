@@ -32,6 +32,8 @@ class _NewsDetailViewScreenCarouselState
   //   super.dispose();
   // }
 
+  double factor = 0.90;
+
   bool fullScreen = false;
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,8 @@ class _NewsDetailViewScreenCarouselState
                   singleNews: news[i],
                   onViewPortFactorChanged: (double val) {
                     setState(() {
-                      fullScreen = val == 1.0 ? true : false;
+                      // fullScreen = val == 1.0 ? true : false;
+                      factor = val;
                     });
                   },
                 ),
@@ -56,9 +59,10 @@ class _NewsDetailViewScreenCarouselState
             },
             itemCount: news.length,
             controller: PageController(
-                initialPage: 0, viewportFraction: fullScreen ? 1.0 : 0.90),
+                initialPage: 0, viewportFraction: factor),
             onPageChanged: (i) {
               setState(() {
+                factor = 0.90;
                 currentPage = i;
               });
             },

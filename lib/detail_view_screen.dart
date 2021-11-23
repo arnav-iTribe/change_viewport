@@ -32,10 +32,30 @@ class _NewsDetailViewScreenState extends State<NewsDetailViewScreen> {
     //     !_controller!.position.outOfRange) {
     //   print('reached the top');
     // }
-    if (_controller!.offset >= 15.0) {
-      widget.onViewPortFactorChanged!(1.0);
-    } else {
-      widget.onViewPortFactorChanged!(0.90);
+    //-----
+    // if (_controller!.offset >= 15.0) {
+    //   widget.onViewPortFactorChanged!(1.0);
+    //   setState(() {
+    //     isFull = true;
+    //   });
+    //   print(isFull);
+    // } else {
+    //   widget.onViewPortFactorChanged!(0.90);
+    //   setState(() {
+    //     isFull = false;
+    //   });
+    //   print(isFull);
+    // }
+    //----------------------------------------------------------------
+    // if (_controller!.offset >= 15.0) {
+    //   widget.onViewPortFactorChanged!(1.0);
+    // }
+
+    for (int i = 1; i <= 20; i++) {
+      if (_controller!.offset >= (10 + i * (20))) { // todo: use less than condition 
+        print('viewport changing-------------------' '$i');
+        widget.onViewPortFactorChanged!(0.90 + (i / 200));
+      }
     }
   }
 
