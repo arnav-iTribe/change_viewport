@@ -20,7 +20,6 @@
 //   }
 // }
 
-
 //------------------------------------------------------------------
 import 'dart:math';
 
@@ -105,12 +104,12 @@ class CustomScrollPhysics extends ScrollPhysics {
   final double itemDimension;
 
   //added this customSpring
-  static final SpringDescription customSpring =
-      SpringDescription.withDampingRatio(
-    mass: 4,
-    stiffness: 150.0,
-    ratio: 1.8,
-  );
+  // static final SpringDescription customSpring =
+  //     SpringDescription.withDampingRatio(
+  //   mass: 4,
+  //   stiffness: 150.0,
+  //   ratio: 1.8,
+  // );
 
   const CustomScrollPhysics(
       {required this.itemDimension, ScrollPhysics? parent})
@@ -149,7 +148,7 @@ class CustomScrollPhysics extends ScrollPhysics {
     if ((velocity <= 0.0 && position.pixels <= position.minScrollExtent) ||
         (velocity >= 0.0 && position.pixels >= position.maxScrollExtent)) {
       return super.createBallisticSimulation(position, velocity);
-    }    
+    }
     final Tolerance tolerance = this.tolerance;
     final double target = _getTargetPixels(position, tolerance, velocity);
     if (target != position.pixels) {
@@ -162,4 +161,3 @@ class CustomScrollPhysics extends ScrollPhysics {
   @override
   bool get allowImplicitScrolling => false;
 }
-

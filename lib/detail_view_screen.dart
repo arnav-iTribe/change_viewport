@@ -53,11 +53,13 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
   _scrollListener() {
     if (_scrollController!.offset >= 10) {
       setState(() {
+        x = MediaQuery.of(context).size.width * 0.03;
         factor = 0.99;
       });
     }
     if (_scrollController!.offset == 0) {
       setState(() {
+        x = 2;
         factor = 0.90;
       });
     }
@@ -79,25 +81,91 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: _scrollController,
-      child: detailViewScreenContent(),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 400),
+      padding: EdgeInsets.symmetric(horizontal: x),
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        child: detailViewScreenContent(),
+      ),
     );
+
+    // Padding(
+    //   padding: EdgeInsets.symmetric(horizontal: x),
+    //   child: SingleChildScrollView(
+    //     controller: _scrollController,
+    //     child: detailViewScreenContent(),
+    //   ),
+    // );
   }
 
   Widget detailViewScreenContent() {
+    const verticalDividerSpace = SizedBox(height: 24);
+
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.90,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 400,
+              child: Image.network(widget.singleNews.newsImageUrl),
+            ),
+            verticalDividerSpace,
+            Text(
+                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMak'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Text(
+                widget.singleNews.title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline2!
+                    .copyWith(fontWeight: FontWeight.w700, fontSize: 19.45),
+              ),
+            ),
+            verticalDividerSpace,
+            Container(height: 300, color: Colors.pinkAccent),
+            verticalDividerSpace,
+            Container(
+              height: 400,
+              color: Colors.amberAccent,
+            ),
+            verticalDividerSpace,
+            Container(
+              height: 400,
+              color: Colors.greenAccent,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+/*
+Widget detailViewScreenContent() {
     const verticalDividerSpace = SizedBox(height: 24);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       // mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        AnimatedContainer(
-          duration: const Duration(seconds: 4),
-          // color: Colors.pinkAccent,
-          width: MediaQuery.of(context).size.width * factor,
-          height: 200,
-          child: Image.network(widget.singleNews.newsImageUrl),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 800),
+            // color: Colors.pinkAccent,
+            width: MediaQuery.of(context).size.width * factor,
+            height: 200,
+            child: Container(
+              width: 400,
+              child: Image.network(widget.singleNews.newsImageUrl),
+            ),
+          ),
         ),
         // Container(
         //   width: MediaQuery.of(context).size.width * factor,
@@ -143,4 +211,4 @@ class _DetailViewScreenState extends State<DetailViewScreen> {
       ],
     );
   }
-}
+*/
