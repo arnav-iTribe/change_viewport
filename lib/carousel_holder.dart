@@ -2,35 +2,15 @@ import 'package:change_viewport_on_scroll_start/detail_view_screen.dart';
 import 'package:change_viewport_on_scroll_start/news_model.dart';
 import 'package:flutter/material.dart';
 
-class NewsDetailViewScreenCarousel extends StatefulWidget {
-  const NewsDetailViewScreenCarousel({Key? key}) : super(key: key);
+class CarouselHolder extends StatefulWidget {
+  const CarouselHolder({Key? key}) : super(key: key);
 
   @override
-  _NewsDetailViewScreenCarouselState createState() =>
-      _NewsDetailViewScreenCarouselState();
+  _CarouselHolderState createState() => _CarouselHolderState();
 }
 
-class _NewsDetailViewScreenCarouselState
-    extends State<NewsDetailViewScreenCarousel> {
+class _CarouselHolderState extends State<CarouselHolder> {
   int currentPage = 0;
-
-  // final FocusNode _focus = FocusNode();
-
-  // void _onFocusChange() {
-  //   debugPrint('Focus: ${_focus.hasFocus.toString()}');
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _focus.addListener(_onFocusChange);
-  // }
-
-  // @override
-  // void dispose() {
-  //   _focus.removeListener(_onFocusChange);
-  //   super.dispose();
-  // }
 
   double factor = 0.90;
 
@@ -45,8 +25,7 @@ class _NewsDetailViewScreenCarouselState
             itemBuilder: (context, i) {
               return Opacity(
                 opacity: currentPage == i ? 1.0 : 0.8,
-                child: NewsDetailViewScreen(
-                  // viewportFactor: viewportFactor,//test this
+                child: DetailViewScreen(
                   singleNews: news[i],
                   onViewPortFactorChanged: (double val) {
                     setState(() {
@@ -58,8 +37,8 @@ class _NewsDetailViewScreenCarouselState
               );
             },
             itemCount: news.length,
-            controller: PageController(
-                initialPage: 0, viewportFraction: factor),
+            controller:
+                PageController(initialPage: 0, viewportFraction: factor),
             onPageChanged: (i) {
               setState(() {
                 factor = 0.90;

@@ -1,74 +1,78 @@
 import 'package:change_viewport_on_scroll_start/news_model.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
-class NewsDetailViewScreen extends StatefulWidget {
-  NewsDetailViewScreen({
+class DetailViewScreen extends StatefulWidget {
+  const DetailViewScreen({
     Key? key,
     required this.singleNews,
     this.onViewPortFactorChanged,
   }) : super(key: key);
+
   final NewsModel singleNews;
-  Function(double)? onViewPortFactorChanged;
+  final Function(double)? onViewPortFactorChanged;
 
   @override
-  State<NewsDetailViewScreen> createState() => _NewsDetailViewScreenState();
+  State<DetailViewScreen> createState() => _DetailViewScreenState();
 }
 
-class _NewsDetailViewScreenState extends State<NewsDetailViewScreen> {
-  final String route = '/news_detail_view_screen';
+class _DetailViewScreenState extends State<DetailViewScreen> {
+  ScrollController? _scrollController;
+  double factor = 0.90;
+  double x = 0;
 
-  ScrollController? _controller;
+  // _scrollListener() {
+  //   for (int i = 1; i <= 20; i++) {
+  //     if (_scrollController!.offset >= i * 20 &&
+  //         _scrollController!.offset < 401.0) {
+  //       widget.onViewPortFactorChanged!(0.90 + (i / 200));
+  //     }
+  //   }
+  // }
+
+  // _scrollListener() {
+  //   for (int i = 1; i <= 20; i++) {
+  //     if (_scrollController!.offset >= i * 20 &&
+  //         _scrollController!.offset < 401.0) {
+  //       print('scrolling');
+  //     }
+  //   }
+  // }
+
+  // _scrollListener() {
+  //   for (int i = 1; i <= 20; i++) {
+  //     if (_scrollController!.offset >= i * 10 &&
+  //         _scrollController!.offset < 202.0) {
+  //       setState(() {
+  //         x += .005;
+  //       });
+  //     }
+  //     break;
+  //   }
+  // }
 
   _scrollListener() {
-    // if (_controller!.offset >= _controller!.position.maxScrollExtent &&
-    //     !_controller!.position.outOfRange) {
-    //   print('reached the bottom');
-    //   // setState(() {
-    //   //   isBottomVisited++;
-    //   // });
-    // }
-    // if (_controller!.offset <= _controller!.position.minScrollExtent &&
-    //     !_controller!.position.outOfRange) {
-    //   print('reached the top');
-    // }
-    //-----
-    // if (_controller!.offset >= 15.0) {
-    //   widget.onViewPortFactorChanged!(1.0);
-    //   setState(() {
-    //     isFull = true;
-    //   });
-    //   print(isFull);
-    // } else {
-    //   widget.onViewPortFactorChanged!(0.90);
-    //   setState(() {
-    //     isFull = false;
-    //   });
-    //   print(isFull);
-    // }
-    //----------------------------------------------------------------
-    // if (_controller!.offset >= 15.0) {
-    //   widget.onViewPortFactorChanged!(1.0);
-    // }
-
-    for (int i = 1; i <= 20; i++) {
-      if (_controller!.offset >= (10 + i * (20))) { // todo: use less than condition 
-        print('viewport changing-------------------' '$i');
-        widget.onViewPortFactorChanged!(0.90 + (i / 200));
-      }
+    if (_scrollController!.offset >= 10) {
+      setState(() {
+        factor = 0.99;
+      });
+    }
+    if (_scrollController!.offset == 0) {
+      setState(() {
+        factor = 0.90;
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
-    _controller!.addListener(_scrollListener);
+    _scrollController = ScrollController();
+    _scrollController!.addListener(_scrollListener);
   }
 
   @override
   void dispose() {
-    _controller!.dispose();
+    _scrollController!.dispose();
     // _controller!.removeListener(_scrollListener);
     super.dispose();
   }
@@ -76,85 +80,67 @@ class _NewsDetailViewScreenState extends State<NewsDetailViewScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      controller: _controller,
+      controller: _scrollController,
       child: detailViewScreenContent(),
     );
   }
 
   Widget detailViewScreenContent() {
-    const verticalDividerSpace = SizedBox(height: 12);
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.network(widget.singleNews.newsImageUrl),
-          verticalDividerSpace,
-          verticalDividerSpace,
-          verticalDividerSpace,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              widget.singleNews.title,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline2!
-                  .copyWith(fontWeight: FontWeight.w700, fontSize: 19.45),
-            ),
-          ),
-          verticalDividerSpace,
-          verticalDividerSpace,
-          newsContentHolderWidget(context, widget.singleNews.description),
-          verticalDividerSpace,
-          verticalDividerSpace,
-          Container(height: 300, color: Colors.pinkAccent),
-          verticalDividerSpace,
-          verticalDividerSpace,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              'Company Suggestions',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyText1!
-                  .copyWith(fontWeight: FontWeight.w700),
-            ),
-          ),
-          verticalDividerSpace,
-          Container(
-            height: 400,
-            color: Colors.amberAccent,
-          ),
-          verticalDividerSpace,
-          Container(
-            height: 400,
-            color: Colors.greenAccent,
-          )
-        ],
-      ),
-    );
-  }
+    const verticalDividerSpace = SizedBox(height: 24);
 
-  Widget newsContentHolderWidget(BuildContext context, String newsContent) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.90,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Text(
-          newsContent,
-          style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                color: Colors.black,
-                height: 1.8,
-                letterSpacing: 0.10,
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      // mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        AnimatedContainer(
+          duration: const Duration(seconds: 4),
+          // color: Colors.pinkAccent,
+          width: MediaQuery.of(context).size.width * factor,
+          height: 200,
+          child: Image.network(widget.singleNews.newsImageUrl),
         ),
-      ),
-      decoration: const BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.all(
-          Radius.circular(24),
+        // Container(
+        //   width: MediaQuery.of(context).size.width * factor,
+        //   height: 150,
+        //   child: Image.network(widget.singleNews.newsImageUrl),
+        // ),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.90,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                verticalDividerSpace,
+                Text(
+                    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMak'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    widget.singleNews.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2!
+                        .copyWith(fontWeight: FontWeight.w700, fontSize: 19.45),
+                  ),
+                ),
+                verticalDividerSpace,
+                Container(height: 300, color: Colors.pinkAccent),
+                verticalDividerSpace,
+                Container(
+                  height: 400,
+                  color: Colors.amberAccent,
+                ),
+                verticalDividerSpace,
+                Container(
+                  height: 400,
+                  color: Colors.greenAccent,
+                )
+              ],
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 }
